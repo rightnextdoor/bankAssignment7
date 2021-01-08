@@ -36,10 +36,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 	
-	@Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
+	@Autowired
+     JwtAuthenticationFilter jwtAuthenticationFilter;
+       
+    
 	
 	@Bean
     public PasswordEncoder passwordEncoder() {
@@ -70,14 +70,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         .antMatchers("/authenticate").permitAll()
-            .antMatchers("/authenticate/createUser").hasRole("Administrator")
-            .antMatchers("/AccountHolders/**").hasRole("Administrator")
+            .antMatchers("/authenticate/createUser").hasAuthority("Administrator")
+            .antMatchers("/AccountHolders/**").hasAuthority("Administrator")
             .antMatchers("/Me/**").hasAuthority("AccountHolder")
-            .antMatchers(HttpMethod.GET ,"/CDOfferings").hasAnyRole("AccountHolder","Administrator")
-            .antMatchers(HttpMethod.POST ,"/CDOfferings").hasRole("Administrator")
+            .antMatchers(HttpMethod.GET ,"/CDOfferings").hasAnyAuthority("AccountHolder","Administrator")
+            .antMatchers(HttpMethod.POST ,"/CDOfferings").hasAuthority("Administrator")
             .anyRequest().authenticated();
-     http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+     http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
-	
+//    @Override
+//  protected void configure(HttpSecurity http) throws Exception {
+//      
+//      http.authorizeRequests()
+//      .antMatchers("/authenticate").permitAll()
+//          .antMatchers("/authenticate/createUser").hasAuthority("Administrator")
+//          .antMatchers("/AccountHolders/**").hasAuthority("Administrator")
+//          .antMatchers("/Me/**").hasAuthority("AccountHolder")
+//          .antMatchers(HttpMethod.GET ,"/CDOfferings").hasAnyAuthority("AccountHolder","Administrator")
+//          .antMatchers(HttpMethod.POST ,"/CDOfferings").hasAuthority("Administrator")
+//          .anyRequest().authenticated()
+//          .and()
+//          .sessionManagement()
+//    		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//      http.csrf().disable();
+//      http.headers().frameOptions().disable();
+//   http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//   }
 	
 }

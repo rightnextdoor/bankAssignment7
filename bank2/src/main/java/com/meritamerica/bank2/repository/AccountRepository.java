@@ -3,9 +3,11 @@ package com.meritamerica.bank2.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.meritamerica.bank2.models.AccountHolder;
 import com.meritamerica.bank2.models.User;
 
@@ -14,7 +16,13 @@ import com.meritamerica.bank2.models.User;
 @Repository
 public interface AccountRepository extends JpaRepository<AccountHolder, Long> {
 	
-	//List<AccountHolder> findByUserIdAndAccountHolder(@Param("userId") Long userId, @Param("accountHolder") List<AccountHolder> accountHolder);
-	//AccountHolder findByUserIdAndAccountHolderId(@Param("userId") Long userId, @Param("accountHolder") Long accountHolderId);
+	@Query("SELECT a FROM AccountHolder a where a.user.id = :userId")
+    List<AccountHolder> findByUserIdIn(@Param("userId") Long userId);
+
+    @Query("SELECT a FROM AccountHolder a where a.user.id = :userId")
+    AccountHolder findByUserId(@Param("userId") Long userId);
+	
+//	  @Query("SELECT a.accountHolder.id FROM AccountHolder a WHERE a.user.id = :userId")
+//	    Page<Long> findAccountHolderIdsByUserId(@Param("userId") Long userId, Pageable pageable);
 	
 }

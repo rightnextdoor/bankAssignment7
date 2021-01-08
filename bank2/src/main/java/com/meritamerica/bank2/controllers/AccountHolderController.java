@@ -41,9 +41,12 @@ public class AccountHolderController {
 	@PostMapping(value = "/AccountHolders")
 	@ResponseStatus(HttpStatus.CREATED)
 	public AccountHolder addAccountHolder(@RequestBody @Valid AccountHolder account,@RequestBody Long userId) {
+		User a = new User();
+		a.setId(userId);
 		
 		service.postAccountHolder(account);
 		//accountHolder.add(account);
+		//service.addAccountHolderByUserId(account, userId);
 		return account;
 	}
 	

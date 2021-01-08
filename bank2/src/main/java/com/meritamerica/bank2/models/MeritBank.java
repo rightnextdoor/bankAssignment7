@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import com.meritamerica.bank2.exception.ExceedsFraudSuspicionLimitException;
 import com.meritamerica.bank2.exception.FraudQueue;
 import com.meritamerica.bank2.exception.NegativeAmountException;
 import com.meritamerica.bank2.repository.AccountRepository;
+import com.meritamerica.bank2.repository.UserRepository;
+import com.meritamerica.bank2.security.UserPrincipal;
 import com.meritamerica.bank2.transaction.Transaction;
 
 
@@ -312,7 +316,23 @@ public class MeritBank{
 	}
 	
 	@Autowired
-	AccountRepository accountHolderRepository;
+	private AccountRepository accountHolderRepository;
+	
+	 @Autowired
+	 private UserRepository userRepository;
+	 
+	 public List<AccountHolder> getAccountHolderByUserId(UserPrincipal currentUser) {
+		 // Retrieve account by the logged in user
+		List<AccountHolder> userAccount = accountHolderRepository.findByUserIdIn(currentUser.getId());
+		
+		return userAccount;
+	}
+	 
+	 public AccountHolder addAccountHolderByUserId(AccountHolder accountHolder, Long userId) {
+		 List<AccountHolder> userAccount = accountHolderRepository.findByUserIdIn(userId);
+		 userAccount.add(accountHolder);
+		 return accountHolder;
+	 }
 	
 	public AccountHolder postAccountHolder(AccountHolder accountHolder) {
 		

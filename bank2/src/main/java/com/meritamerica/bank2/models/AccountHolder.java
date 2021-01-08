@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 
@@ -25,6 +27,12 @@ import com.meritamerica.bank2.transaction.DepositTransaction;
 
 
 @Entity
+@Table(name = "AccountHolder", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "id",
+                "user_id"
+        })
+})
 public class AccountHolder implements Comparable<AccountHolder>
 {
 	private static final double MAX_BALANCE_AMOUNT = 250000;
@@ -74,11 +82,19 @@ public class AccountHolder implements Comparable<AccountHolder>
 	@Max(value = 250000, message = "Total bank account should not be greater than $250,000")
 	private  double totalB = 0;
 	
-//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private Set<User> user= new HashSet<>();
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 	
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public double getTotalB() {
 		return totalB;
 	}

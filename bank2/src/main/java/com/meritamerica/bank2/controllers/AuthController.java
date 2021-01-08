@@ -85,10 +85,6 @@ public class AuthController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username already in use!"),
-                    HttpStatus.BAD_REQUEST);
-        }
 
         // Creating user's account
         User user = new User(signUpRequest.getUsername(),
