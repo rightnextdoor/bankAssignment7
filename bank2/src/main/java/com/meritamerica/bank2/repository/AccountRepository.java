@@ -25,9 +25,12 @@ public interface AccountRepository extends JpaRepository<AccountHolder, Long> {
     @Query("SELECT a FROM AccountHolder a where a.user.id = :userId")
     AccountHolder findByUserId(@Param("userId") Long userId);
 
+   
+    
 	void save(SavingsAccount savingsAccount);
 	void save(CheckingAccount checkingAccount);
 	void save(CDAccount cdAccount);
+	
 	
 //	  @Query("SELECT a.accountHolder.id FROM AccountHolder a WHERE a.user.id = :userId")
 //	    Page<Long> findAccountHolderIdsByUserId(@Param("userId") Long userId, Pageable pageable);

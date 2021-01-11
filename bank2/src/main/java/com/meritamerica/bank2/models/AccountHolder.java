@@ -226,7 +226,7 @@ public class AccountHolder implements Comparable<AccountHolder>
 	/** Returns CheckingAccount[] */
 	public CheckingAccount[] getCheckingAccounts() 
 	{
-		return checkingAccounts;
+		return this.checkingAccounts;
 	}
 
 	/** Returns the total amount of checkingAccounts*/

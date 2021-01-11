@@ -23,7 +23,9 @@ import com.meritamerica.bank2.models.MeritBank;
 import com.meritamerica.bank2.models.SavingsAccount;
 import com.meritamerica.bank2.models.User;
 import com.meritamerica.bank2.repository.AccountRepository;
+import com.meritamerica.bank2.repository.CDAccountRepository;
 import com.meritamerica.bank2.repository.CheckingAccountRepository;
+import com.meritamerica.bank2.repository.SavingsAccountRepository;
 import com.meritamerica.bank2.security.CurrentUser;
 import com.meritamerica.bank2.security.UserPrincipal;
 
@@ -35,6 +37,13 @@ public class MeController {
 	
 	@Autowired
 	AccountRepository account;
+	@Autowired
+	CheckingAccountRepository checkings;
+	@Autowired
+	SavingsAccountRepository savings;
+	@Autowired
+	CDAccountRepository cd;
+	
 	List<CheckingAccount> checking = new ArrayList<>();
 	
 	@GetMapping(value = "/Me")
@@ -52,15 +61,16 @@ public class MeController {
 	public CheckingAccount[] addCheckingAccount(@CurrentUser UserPrincipal currentUser
 			,@RequestBody @Valid CheckingAccount  balance)throws NoSuchResourceFoundException, ExceedsCombinedBalanceLimitException {
 		
-		 account.save((bank.getAccountHolderByUserId(currentUser).addCheckingAccount(balance)));
+		 checkings.save((bank.getAccountHolderByUserId(currentUser).addCheckingAccount(balance)));
 		return bank.getAccountHolderByUserId(currentUser).getCheckingAccounts() ;
 	}
 	
 	@GetMapping(value = "/Me/CheckingAccounts")
 	@ResponseStatus(HttpStatus.OK)
-	public CheckingAccount[] getCheckingAccount(@CurrentUser UserPrincipal currentUser) throws NoSuchResourceFoundException {
+	public List<CheckingAccount> getCheckingAccount(@CurrentUser UserPrincipal currentUser) throws NoSuchResourceFoundException {
 		
-		return bank.getAccountHolderByUserId(currentUser).getCheckingAccounts();
+		//return bank.getAccountHolderByUserId(currentUser).getCheckingAccounts();
+		return checkings.findAll();
 	}
 	
 	@PostMapping(value = "/Me/SavingsAccounts")
@@ -68,15 +78,15 @@ public class MeController {
 	public SavingsAccount[] addSavingsAccount(@CurrentUser UserPrincipal currentUser, 
 			@RequestBody SavingsAccount  balance)throws NoSuchResourceFoundException, ExceedsCombinedBalanceLimitException {
 		
-		 account.save((bank.getAccountHolderByUserId(currentUser).addSavingsAccount(balance)));
+		 savings.save((bank.getAccountHolderByUserId(currentUser).addSavingsAccount(balance)));
 			return bank.getAccountHolderByUserId(currentUser).getSavingsAccounts() ;
 	}
 	
 	@GetMapping(value = "/Me/SavingsAccounts")
 	@ResponseStatus(HttpStatus.OK)
-	public SavingsAccount[] getSavingsAccount(@CurrentUser UserPrincipal currentUser) throws NoSuchResourceFoundException {
+	public List<SavingsAccount> getSavingsAccount(@CurrentUser UserPrincipal currentUser) throws NoSuchResourceFoundException {
 		
-		return bank.getAccountHolderByUserId(currentUser).getSavingsAccounts() ;
+		return savings.findAll();
 	}
 	
 	@PostMapping(value = "/Me/CDAccounts")
@@ -85,15 +95,15 @@ public class MeController {
 			@RequestBody @Valid CDAccount  cdAccount)throws NoSuchResourceFoundException, ExceedsCombinedBalanceLimitException {
 		
 		
-		 account.save((bank.getAccountHolderByUserId(currentUser).addCDAccount(cdAccount)));
+		 cd.save((bank.getAccountHolderByUserId(currentUser).addCDAccount(cdAccount)));
 			return bank.getAccountHolderByUserId(currentUser).getCDAccounts() ;
 	}
 	
 	@GetMapping(value = "/Me/CDAccounts")
 	@ResponseStatus(HttpStatus.OK)
-	public CDAccount[] getCDAccount(@CurrentUser UserPrincipal currentUser) throws NoSuchResourceFoundException {
+	public List<CDAccount> getCDAccount(@CurrentUser UserPrincipal currentUser) throws NoSuchResourceFoundException {
 		
-		return bank.getAccountHolderByUserId(currentUser).getCDAccounts() ;
+		return cd.findAll();
 	
 	}
 	

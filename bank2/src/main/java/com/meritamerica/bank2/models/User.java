@@ -35,7 +35,7 @@ public class User {
     		joinColumns={@JoinColumn(name="USER_ID")},
     	       inverseJoinColumns={@JoinColumn(name="ROLE_ID")})
     private Set<Role> roles = new HashSet<>();
-
+ //   private String role;
 	public Long getId() {
 		return id;
 	}
@@ -80,6 +80,14 @@ public class User {
 
     }
 	
+//	public String getRole() {
+//		return role;
+//	}
+//
+//	public void setRole(String role) {
+//		this.role = role;
+//	}
+
 	public User(String username, String password, boolean active){
 		
 		this.username = username;
