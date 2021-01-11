@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -321,21 +322,26 @@ public class MeritBank{
 	 @Autowired
 	 private UserRepository userRepository;
 	 
-	 public List<AccountHolder> getAccountHolderByUserId(UserPrincipal currentUser) {
+	 public List<AccountHolder> getAccountHoldersByUserId(UserPrincipal currentUser) {
 		 // Retrieve account by the logged in user
 		 Long id = (long) 2;
 		List<AccountHolder> userAccount = new ArrayList<>();
-		accountHolderRepository.findByUserId(currentUser.getId())
+		accountHolderRepository.findByUserIdIn(currentUser.getId())
 		.forEach(userAccount::add);
 		
 		return userAccount;
 	}
 	 
-	 public AccountHolder addAccountHolderByUserId(AccountHolder accountHolder, Long userId) {
-		 List<AccountHolder> userAccount = accountHolderRepository.findByUserId(userId);
-		 userAccount.add(accountHolder);
-		 return accountHolder;
+	 public AccountHolder getAccountHolderByUserId(UserPrincipal currentUser) {
+		
+		 return accountHolderRepository.findByUserId(currentUser.getId());
 	 }
+	 
+//	 public AccountHolder addAccountHolderByUserId(AccountHolder accountHolder, Long userId) {
+//		 List<AccountHolder> userAccount = accountHolderRepository.findByUserId(userId);
+//		 userAccount.add(accountHolder);
+//		 return accountHolder;
+//	 }
 	
 	public AccountHolder postAccountHolder(AccountHolder accountHolder) {
 		
@@ -347,8 +353,8 @@ public class MeritBank{
 		return accountHolderRepository.findAll();
 	}
 	
-	public List<AccountHolder> getAccountHolderById(Long id) {
-		return accountHolderRepository.findByUserId(id);
+	public Optional<AccountHolder> getAccountHolderById(Long id) {
+		return accountHolderRepository.findById(id);
 	}
 	
 	public SavingsAccount[] postSavingsAccount(SavingsAccount balance, Long id) throws ExceedsCombinedBalanceLimitException {

@@ -19,9 +19,12 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.meritamerica.bank2.exception.ExceedsCombinedBalanceLimitException;
 import com.meritamerica.bank2.exception.ExceedsFraudSuspicionLimitException;
+import com.meritamerica.bank2.repository.CheckingAccountRepository;
 import com.meritamerica.bank2.transaction.DepositTransaction;
 
 
@@ -94,7 +97,7 @@ public class AccountHolder implements Comparable<AccountHolder>
 	}
 	
 
-public User getUser() {
+	public User getUser() {
 		return user;
 	}
 
@@ -184,6 +187,8 @@ public User getUser() {
 	/** -----------------------------------------------CHECKING ACCOUNT------------------------------------------------------*/
 	/** Creates a checking account and calls addCheckingAccount(CheckingAccount) method */
 	
+
+	
 	public AccountHoldersContactDetails addContact(Long number) {
 		return addContact(number);
 	}
@@ -204,16 +209,16 @@ public User getUser() {
 
 		totalB = totalB + checkingAccount.getBalance();
 		if (totalB < MAX_BALANCE_AMOUNT) {
-			if(countCheck == checkingAccounts.length) {
+			if(countCheck >= checkingAccounts.length) {
 				CheckingAccount[] newCheckingAccounts = new CheckingAccount[countCheck + 1];
-				for(int i = 0 ; i < countCheck  ; i++) {
+				for(int i = 0 ; i < checkingAccounts.length; i++) {
 					newCheckingAccounts[i] = checkingAccounts[i];
 				} 
 				checkingAccounts = newCheckingAccounts;
 			}			
 			checkingAccounts[countCheck] = checkingAccount;
 			countCheck++; 
-			return null;
+			return checkingAccount;
 		} else 
 			return null;
 	}
@@ -256,16 +261,16 @@ public User getUser() {
 	{
 		totalB = totalB + savingsAccount.getBalance();
 		if (totalB < MAX_BALANCE_AMOUNT) {
-			if(countSavings == savingsAccounts.length) {
+			if(countSavings >= savingsAccounts.length) {
 				SavingsAccount[] newSavingsAccounts = new SavingsAccount[countSavings + 1];
-				for(int i = 0 ; i < countCheck  ; i++) {
+				for(int i = 0 ; i < savingsAccounts.length  ; i++) {
 					newSavingsAccounts[i] = savingsAccounts[i];
 				} 
 				savingsAccounts = newSavingsAccounts;
 			}			
 			savingsAccounts[countSavings] = savingsAccount;
 			countSavings++; 
-			return null;
+			return savingsAccount;
 		} else 
 			return null;
 	}
@@ -316,10 +321,10 @@ public User getUser() {
 	/** Adds cdAccount into a CDAccounts[]*/
 	public CDAccount addCDAccount(CDAccount cdAccount) 
 	{
-		if(countCD == this.cdAccounts.length) 
+		if(countCD >= this.cdAccounts.length) 
 		{
 			CDAccount[] newCDAccount = new CDAccount[countCD + 1];
-			for(int i = 0; i < countCD; i++) 
+			for(int i = 0; i < cdAccounts.length; i++) 
 			{
 				newCDAccount[i] = this.cdAccounts[i];
 			}
@@ -328,7 +333,7 @@ public User getUser() {
 			countCD ++;
 		}
 		//---add deposit with opening balance
-		return null ;
+		return cdAccount;
 	}
 	/** Returns a CDAccounts[]*/
 	public CDAccount[] getCDAccounts() 

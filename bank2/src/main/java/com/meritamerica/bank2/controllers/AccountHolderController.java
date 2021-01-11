@@ -2,6 +2,7 @@ package com.meritamerica.bank2.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -56,7 +57,7 @@ public class AccountHolderController {
 	
 	@GetMapping(value = "/AccountHolders/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<AccountHolder> getAccountHolderByID(@PathVariable Long id) throws NoSuchResourceFoundException {
+	public Optional<AccountHolder> getAccountHolderByID(@PathVariable Long id) throws NoSuchResourceFoundException {
 		if(id > accountHolder.size()) {
 			throw new NoSuchResourceFoundException("Invalid id");
 		}
