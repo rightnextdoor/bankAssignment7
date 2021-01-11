@@ -87,36 +87,35 @@ public class AccountHolder implements Comparable<AccountHolder>
     private User user;
 	
 	
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+	
 
 	public double getTotalB() {
 		return totalB;
 	}
 	
-//	public Set<User> getUser() {
-//		return user;
-//	}
-//	
-//	public void setUser(Set<User> user) {
-//		this.user = user;
-//	}
+
+public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
 /**
 	 * AccountHolder Constructor (String, String, String, String)
 	 */
 	public AccountHolder() {}
 	
-	public AccountHolder(String firstName, String middleName, String lastName, String ssn) 
+	public AccountHolder(String firstName, String middleName, String lastName, String ssn, Long userId) 
 	{
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
 		this.ssn = ssn;
+		this.user = new User(userId);
 		
 	}
 	/** -----------------------------------------------GETTERS------------------------------------------------------*/
@@ -378,9 +377,10 @@ public class AccountHolder implements Comparable<AccountHolder>
 		} catch (Exception e) {
 			throw e;
 		}
-		ac = new AccountHolder(firstName, middleName, lastName, ssn);
+		//ac = new AccountHolder(firstName, middleName, lastName, ssn);
 
-		return ac;
+		//return ac;
+		return null;
 	}
 
 	@Override

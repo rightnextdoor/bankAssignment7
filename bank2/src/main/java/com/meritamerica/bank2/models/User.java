@@ -87,6 +87,10 @@ public class User {
 		this.active = active;
 		
 	}
+
+	public User(Long userId) {
+		this.id = userId;
+	}
 	
 	
     

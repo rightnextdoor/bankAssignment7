@@ -20,6 +20,7 @@ import com.meritamerica.bank2.models.CDAccount;
 import com.meritamerica.bank2.models.CheckingAccount;
 import com.meritamerica.bank2.models.MeritBank;
 import com.meritamerica.bank2.models.SavingsAccount;
+import com.meritamerica.bank2.models.User;
 import com.meritamerica.bank2.security.CurrentUser;
 import com.meritamerica.bank2.security.UserPrincipal;
 
@@ -32,6 +33,9 @@ public class MeController {
 	@GetMapping(value = "/Me")
 	@ResponseStatus(HttpStatus.OK)
 	public  List<AccountHolder> getAccount(@CurrentUser UserPrincipal currentUser){
+		AccountHolder a = new AccountHolder();
+		Long id = (long) 2;
+		a.setUser(new User(currentUser.getId()));
 		
 		return bank.getAccountHolderByUserId(currentUser);
 	}

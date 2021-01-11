@@ -323,13 +323,16 @@ public class MeritBank{
 	 
 	 public List<AccountHolder> getAccountHolderByUserId(UserPrincipal currentUser) {
 		 // Retrieve account by the logged in user
-		List<AccountHolder> userAccount = accountHolderRepository.findByUserIdIn(currentUser.getId());
+		 Long id = (long) 2;
+		List<AccountHolder> userAccount = new ArrayList<>();
+		accountHolderRepository.findByUserId(currentUser.getId())
+		.forEach(userAccount::add);
 		
 		return userAccount;
 	}
 	 
 	 public AccountHolder addAccountHolderByUserId(AccountHolder accountHolder, Long userId) {
-		 List<AccountHolder> userAccount = accountHolderRepository.findByUserIdIn(userId);
+		 List<AccountHolder> userAccount = accountHolderRepository.findByUserId(userId);
 		 userAccount.add(accountHolder);
 		 return accountHolder;
 	 }
@@ -344,8 +347,8 @@ public class MeritBank{
 		return accountHolderRepository.findAll();
 	}
 	
-	public AccountHolder getAccountHolderById(Long id) {
-		return accountHolderRepository.getOne(id);
+	public List<AccountHolder> getAccountHolderById(Long id) {
+		return accountHolderRepository.findByUserId(id);
 	}
 	
 	public SavingsAccount[] postSavingsAccount(SavingsAccount balance, Long id) throws ExceedsCombinedBalanceLimitException {

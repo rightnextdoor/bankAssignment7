@@ -17,10 +17,10 @@ import com.meritamerica.bank2.models.User;
 public interface AccountRepository extends JpaRepository<AccountHolder, Long> {
 	
 	@Query("SELECT a FROM AccountHolder a where a.user.id = :userId")
-    List<AccountHolder> findByUserIdIn(@Param("userId") Long userId);
+    List<AccountHolder> findByUserId(@Param("userId") Long userId);
 
-    @Query("SELECT a FROM AccountHolder a where a.user.id = :userId")
-    AccountHolder findByUserId(@Param("userId") Long userId);
+//    @Query("SELECT a FROM AccountHolder a where a.user.id = :userId")
+//    AccountHolder findByUserId(@Param("userId") Long userId);
 	
 //	  @Query("SELECT a.accountHolder.id FROM AccountHolder a WHERE a.user.id = :userId")
 //	    Page<Long> findAccountHolderIdsByUserId(@Param("userId") Long userId, Pageable pageable);
